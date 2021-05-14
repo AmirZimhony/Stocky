@@ -1,0 +1,33 @@
+{
+  "name": "stocky",
+  "version": "1.0.0",
+  "description": "Stock managing app\u001b[1;6D\u001b[1;6D\u001b[1;6DAn app for managing your stocks\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C stock holdings.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u001b[D\u001b[D\u001b[D\u001b[\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[Stocky.git)"
+  },
+  "keywords": [
+    "restREST",
+    "api",
+    "stocks",
+    "front",
+    "end"
+  ],
+  "author": "Amir Zimhony",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "method-override": "^3.0.0",
+<<<<<<< HEAD
+    "mongoose": "^5.12.5",
+=======
+    "mongoose": "^5.11.18",
+>>>>>>> 806b0d228bf615894acc3b3c1be884a0296fb049
+    "uuid": "^8.3.2"
+  }
+}

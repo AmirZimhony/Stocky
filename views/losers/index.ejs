@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Deep Russian| All our proud losers</title>
+</head>
+<h1>Behold all our great losers Index:</h1>
+<ul>
+    <% for (let l of losers){ %>
+        <li><%=l.name%> - <%=l.reason %> <a href="/losers/<%= l.id  %> ">details of sissy</a></li> 
+    <% } %>  
+</ul>
+<a href="losers/new">add loser</a>
+<div>
+<a href="/home">Homepage</a>
+</div>
+<body>
+    
+</body>
+</html>
