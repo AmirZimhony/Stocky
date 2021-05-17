@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> show </title>
+</head>
+<body>
+    <h1>  <%= stock.name  %> show </h1>
+
+    <p>  Serial number <%= stock.ISIN  %></p>
+    <p>  Price <%= stock.price  %></p>
+    <p>  <b>Indices:</b> <%= stock.indices  %></p>
+    <p>
+        <form action="/stocks/<%= stock._id  %>?_method=DELETE" method="POST">
+            <button>Delete</button>
+        </form>
+    </p>
+    <footer>
+        <a href="/stocks/<%= stock._id  %>/edit ">Edit</a>
+        <a href="/stocks">all stocks</a>
+    </footer>
+</body>
+</html>
+
