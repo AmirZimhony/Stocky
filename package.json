@@ -23,11 +23,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "method-override": "^3.0.0",
-<<<<<<< HEAD
-    "mongoose": "^5.12.5",
-=======
-    "mongoose": "^5.11.18",
->>>>>>> 806b0d228bf615894acc3b3c1be884a0296fb049
+    "mongoose": "^5.12.9",
     "uuid": "^8.3.2"
   }
 }
