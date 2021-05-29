@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const stockList = require('./stocklist')
 const Stock = require("../models/stock");
-const stocklist = require('./stocklist');
 
 
 mongoose.connect('mongodb://localhost:27017/stocky', {
@@ -13,17 +12,17 @@ mongoose.connect('mongodb://localhost:27017/stocky', {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Stocky Database connected")
+    console.log("Stocky Database connected from app.js")
 });
 
 const seedDB = async () => {
     await Stock.deleteMany({});
-    for (let i=0; i<489; i++){
+    for (let i=0; i<stockList.length; i++){
         const stock = new Stock({
             price: ((stockList[i]['Closing Price (0.01 NIS)'] !== null) ? `${stockList[i]['Closing Price (0.01 NIS)']}` : 0), 
-            name: `${stocklist[i]['Name']}`,
-            ISIN: `${stocklist[i]['ISIN']}`,
-            indices: `${stocklist[i]['Index']}`
+            name: `${stockList[i]['Name']}`,
+            ISIN: `${stockList[i]['ISIN']}`,
+            indices: `${stockList[i]['Index']}`
         })
         await stock.save();
     }
