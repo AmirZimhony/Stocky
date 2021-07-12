@@ -7,14 +7,18 @@
     <title> show </title>
 </head>
 <body>
-    <h1>  <%= stock.name  %> show </h1>
+    <h1>  <%= stock.Name  %> show </h1>
 
     
-    <% const EditedISIN = stock.ISIN.substring(2,stock.ISIN.length -1 ) %> <!-- extract the relevant part of ISIN necessary for visiting page of stock on TASE website -->
-    <p>  Serial number <%= stock.ISIN  %></p>
-    <p>  Price <%= stock.price  %></p>
-    <p>  <b>Indices:</b> <%= stock.indices  %></p>
-    <p>For more Data: <a href="https:\\www.tase.co.il\en\market_data\security\<%= EditedISIN  %>\major_data">Click here</a></p>
+     <p>  Symbol <%= stock.Symbol  %></p>
+    <p>  Price <%= stock.Price  %></p>
+    <p>  Volume <%= stock.Volume  %></p>
+    <p>  <b>Country</b> <%= stock.Country  %></p>
+    <p>  <b>IPO Year</b> <%= stock.IPOYear  %></p>
+    <p>  <b>Sector</b> <%= stock.Sector  %></p>
+    <p>  <b>Industry</b> <%= stock.Industry  %></p>
+    
+    <p>For more Data: <a href="https://www.nasdaq.com/market-activity/stocks/<%= stock.Symbol  %>">Click here</a></p>
     <p>
         <form action="/stocks/<%= stock._id  %>?_method=DELETE" method="POST">
             <button>Delete</button>

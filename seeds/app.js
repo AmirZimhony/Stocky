@@ -19,10 +19,15 @@ const seedDB = async () => {
     await Stock.deleteMany({});
     for (let i=0; i<stockList.length; i++){
         const stock = new Stock({
-            price: ((stockList[i]['Closing Price (0.01 NIS)'] !== null) ? `${stockList[i]['Closing Price (0.01 NIS)']}` : 0), 
-            name: `${stockList[i]['Name']}`,
-            ISIN: `${stockList[i]['ISIN']}`,
-            indices: `${stockList[i]['Index']}`
+            Symbol: `${stockList[i]['Symbol']}`,
+            Name: `${stockList[i]['Name']}`,
+            Price: ((stockList[i]['Last Sale'] !== null) ? `${stockList[i]['Last Sale']}` : 0), 
+            MarketCap: `${stockList[i]['Market Cap']}`,
+            Country: `${stockList[i]['Country']}`,
+            IPOYear: `${stockList[i]['IPO Year']}`,
+            Volume: `${stockList[i]['Volume']}`,
+            Sector: `${stockList[i]['Sector']}`,
+            Industry: `${stockList[i]['Industry']}`
         })
         await stock.save();
     }

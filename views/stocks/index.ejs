@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stocks</title>
+    <link rel="icon" type="image/png" href="reading.jpg">
 </head>
 
 <body>
@@ -15,10 +16,12 @@
         <a href="/stocks/new">add stock</a>
     </div>
 
-    <ul>
-        <% for (let stock of stocks) { %>
+    <ul id = 'stockList'>
+        <button id="btn"> For Freshest IPOs</button>
+       <% const newest = stocks.filter(stock => stock.IPOYear > 2019)   %> 
+        <% for (let stock of newest) { %>
             <li><a href="/stocks/<%= stock.id  %> ">
-                    <%= stock.name %>
+                    <%= stock.Name %>
                 </a></li>
             <% } %>
     </ul>

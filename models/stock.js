@@ -4,12 +4,15 @@ const Schema = mongoose.Schema;
 //----------define our database structure----------
 
 const StockSchema = new mongoose.Schema({
-    name: String,
-    DateOfInitialPurchase: String,
-    ISIN: String,
-    initialPurchaseSum: Number,
-    price: Number,
-    indices: String
+    Symbol: String,
+    Name: String,
+    Price: String,
+    MarketCap: Number,
+    Country: String,
+    IPOYear: Number,
+    Volume: Number,
+    Sector: String,
+    Industry: String
 });
 
 module.exports = mongoose.model('Stock', StockSchema)
