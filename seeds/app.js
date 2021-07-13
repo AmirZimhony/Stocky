@@ -21,13 +21,14 @@ const seedDB = async () => {
         const stock = new Stock({
             Symbol: `${stockList[i]['Symbol']}`,
             Name: `${stockList[i]['Name']}`,
-            Price: ((stockList[i]['Last Sale'] !== null) ? `${stockList[i]['Last Sale']}` : 0), 
+            prevPrice: ((stockList[i]['Last Sale'] !== null) ? `${stockList[i]['Last Sale']}` : 0), 
             MarketCap: `${stockList[i]['Market Cap']}`,
             Country: `${stockList[i]['Country']}`,
             IPOYear: `${stockList[i]['IPO Year']}`,
             Volume: `${stockList[i]['Volume']}`,
             Sector: `${stockList[i]['Sector']}`,
-            Industry: `${stockList[i]['Industry']}`
+            Industry: `${stockList[i]['Industry']}`,
+            numOfRisingDays: 0 
         })
         await stock.save();
     }

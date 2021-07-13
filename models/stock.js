@@ -6,13 +6,14 @@ const Schema = mongoose.Schema;
 const StockSchema = new mongoose.Schema({
     Symbol: String,
     Name: String,
-    Price: String,
+    prevPrice: String,
     MarketCap: Number,
     Country: String,
     IPOYear: Number,
     Volume: Number,
     Sector: String,
-    Industry: String
+    Industry: String,
+    numOfRisingDays: Number 
 });
 
 module.exports = mongoose.model('Stock', StockSchema)

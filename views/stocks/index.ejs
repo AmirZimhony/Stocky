@@ -17,9 +17,9 @@
     </div>
 
     <ul id = 'stockList'>
-        <button id="btn"> For Freshest IPOs</button>
-       <% const newest = stocks.filter(stock => stock.IPOYear > 2019)   %> 
-        <% for (let stock of newest) { %>
+        <!-- <button id="btn"> For Freshest IPOs</button> -->
+       <% const newest = stocks.filter(stock => stock.IPOYear)   %> <!--maybe useful in future-->
+        <% for (let stock of stocks) { %>
             <li><a href="/stocks/<%= stock.id  %> ">
                     <%= stock.Name %>
                 </a></li>
