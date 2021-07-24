@@ -21,7 +21,7 @@
        <% const newest = stocks.filter(stock => stock.IPOYear)   %> <!--maybe useful in future-->
         <% for (let stock of stocks) { %>
             <li><a href="/stocks/<%= stock.id  %> ">
-                    <%= stock.Name %>
+                    <%= stock.Symbol %> , <%= stock.Name %> 
                 </a></li>
             <% } %>
     </ul>

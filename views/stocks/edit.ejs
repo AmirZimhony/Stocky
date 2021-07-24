@@ -7,23 +7,23 @@
     <title>Edit Stock</title>
 </head>
 <body>
-    <h1>Edit Stock</h1>
+    <h1>Edit Stock <%= stock.Name  %> </h1>
     <form action="/stocks/<%= stock._id  %>?_method=PUT " method="POST">
         <div>
             <label for="name">Name</label>
-            <input type="text" id="name" name="stock[name]" value="<%= stock.name  %> ">
+            <input type="text" id="name" name="stock[name]" value="<%= stock.Name  %> ">
         </div>
         <div>
             <label for="price">Price</label>
-            <input type="number" id="price" name="stock[price]" value="<%= stock.price  %>" >
+            <input type="text" id="price" name="stock[prevPrice]" value="<%= stock.prevPrice  %>" >
         </div>
         <div>
-            <label for="ISIN">ISIN</label>
-            <input type="text" id="ISIN" name="stock[ISIN]" value="<%= stock.ISIN  %>" >
+            <label for="Symbol">Symbol</label>
+            <input type="text" id="Symbol" name="stock[Symbol]" value="<%= stock.Symbol  %>" >
         </div>
         <div>
-            <label for="indices">Indices</label>
-            <input type="text" id="indices" name="stock[indices]" value="<%= stock.indices  %>" >
+            <label for="IPOYear">Indices</label>
+            <input type="number" id="indices" name="stock[IPOYear]" value="<%= stock.IPOYear  %>" >
         </div>
         <button>Update Stock</button>
     </form>

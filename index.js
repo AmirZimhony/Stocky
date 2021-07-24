@@ -10,6 +10,7 @@ const Stock = require("./models/stock");
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const { STATUS_CODES } = require('http');
+const { google } = require('googleapis');
 
 mongoose.connect('mongodb://localhost:27017/stocky', {
     useNewUrlParser: true,
@@ -79,9 +80,10 @@ app.post('/stocks', catchAsync(async (req, res) => {
     res.redirect(`/stocks/${stock._id}`)
 }))
 
-app.put('/stocks/:id',  catchAsync(async (req, res) => {
+app.put('/stocks/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     const stock = await Stock.findByIdAndUpdate(id, { ...req.body.stock })
+    console.log("updated values passed are:", { ...req.body.stock })
     res.redirect(`/stocks/${stock._id}`)
 }))
 
@@ -97,6 +99,39 @@ app.get('/makestock', catchAsync(async (req, res) => {
     res.send(singleStock)
 }))
 
+app.get("/upDateStocks", async (req, res) => {
+    const auth = new google.auth.GoogleAuth({
+        keyFile: "./credentials.json",
+
+        scopes: "https://www.googleapis.com/auth/spreadsheets",
+    });
+
+
+    // Create client instance for auth
+    const client = await auth.getClient();
+
+    // Instance of Google Sheets API
+    const googleSheets = google.sheets({ version: "v4", auth: client });
+
+    const spreadsheetId = '1j4A9tXOIMpZ9tnve5iEcvxJJxy3L1U-5Yjulxhgj9t0';
+    // Get metadata about spreadsheet
+    const metaData = await googleSheets.spreadsheets.get({
+        auth,
+        spreadsheetId,
+    });
+
+    // Read rows from spreadsheet
+    const getRows = await googleSheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId,
+        range: "Sheet1!A:C",
+    });
+    console.log("specific data is " + getRows.data.values[1][0]);
+    await res.send(getRows.data)
+    for (let i = 1; i < getRows.data.values.length; i++) {
+        updateSingleStock(getRows.data.values[i]);
+    }
+})
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('404 here loser', 404))
@@ -114,3 +149,34 @@ app.listen(3000, () => {
     console.log('listening...')
 }
 )
+
+/////////////////////////function for updating stock values////////////////////////////////////
+
+const updateSingleStock = async (newValues) => {
+    console.log("editing" + newValues[0] + "price to be:" + newValues[1])
+    let risingDays = 0;
+    const risingStock = await Stock.find({ Symbol: newValues[0] }).then((result) => {
+        if (newValues[2] > 0) {
+            risingDays = result[0].numOfRisingDays + 1;
+        }
+        else
+            if (newValues[2] < 0) {//in case the stock price has decreased
+                risingDays = result[0].numOfRisingDays - 1;
+            }
+    }).then(async () => {
+        await Stock.updateOne({ Symbol: newValues[0] }, { prevPrice: newValues[1], numOfRisingDays: risingDays }).then((res=>{console.log(res)}));
+        console.log("rising days for stock " + newValues[0] + " is:" + risingDays);
+    })
+
+}
+
+        // console.log("stock name is"+name);
+        // let risingDays = risingStock.numOfRisingDays;
+        // console.log ("stock data found is damn "+risingStock )
+        // console.log ("risingDays should now be 1, its : "+risingStock.Name )
+
+
+
+
+
+
