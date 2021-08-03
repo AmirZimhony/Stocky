@@ -13,7 +13,8 @@ const StockSchema = new mongoose.Schema({
     Volume: Number,
     Sector: String,
     Industry: String,
-    numOfRisingDays: Number 
+    numOfRisingDays: Number,
+    accumulatedChange: Number
 });
 
 module.exports = mongoose.model('Stock', StockSchema)

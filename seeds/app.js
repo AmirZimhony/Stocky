@@ -28,7 +28,9 @@ const seedDB = async () => {
             Volume: `${stockList[i]['Volume']}`,
             Sector: `${stockList[i]['Sector']}`,
             Industry: `${stockList[i]['Industry']}`,
-            numOfRisingDays: 0 
+            numOfRisingDays: 0,
+            accumulatedChange: 0
+
         })
         await stock.save();
     }

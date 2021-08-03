@@ -18,7 +18,7 @@
 
     <ul id = 'stockList'>
         <!-- <button id="btn"> For Freshest IPOs</button> -->
-       <% const newest = stocks.filter(stock => stock.IPOYear)   %> <!--maybe useful in future-->
+       <% const trendest = stocks.filter(stock => stock.numOfRisingDays > 4 && stock.IPOYear>2018)   %> <!--maybe useful in future-->
         <% for (let stock of stocks) { %>
             <li><a href="/stocks/<%= stock.id  %> ">
                     <%= stock.Symbol %> , <%= stock.Name %> 

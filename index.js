@@ -124,10 +124,11 @@ app.get("/upDateStocks", async (req, res) => {
     const getRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
-        range: "Sheet1!A:C",
+        range: "Sheet1!A:D",
     });
     console.log("specific data is " + getRows.data.values[1][0]);
     await res.send(getRows.data)
+    // updateSingleStock(getRows.data.values[7]);
     for (let i = 1; i < getRows.data.values.length; i++) {
         updateSingleStock(getRows.data.values[i]);
     }
@@ -153,19 +154,40 @@ app.listen(3000, () => {
 /////////////////////////function for updating stock values////////////////////////////////////
 
 const updateSingleStock = async (newValues) => {
-    console.log("editing" + newValues[0] + "price to be:" + newValues[1])
+    let stockSymbol = newValues[0];
+    let stockPrice = newValues[1];
+    let stockChange = newValues[2];
+    let stockChangePct = newValues[3];
+    console.log("editing" + stockSymbol + "price to be:" + stockPrice)
     let risingDays = 0;
-    const risingStock = await Stock.find({ Symbol: newValues[0] }).then((result) => {
-        if (newValues[2] > 0) {
-            risingDays = result[0].numOfRisingDays + 1;
+    let incrementalChange = 0;
+    const risingStock = await Stock.find({ Symbol: stockSymbol }).then((result) => {
+        let stockFromDb = result[0];
+        if (stockChangePct > 0) { //in case the stock price has increased
+            if (stockFromDb.numOfRisingDays < 0) {//in case trend of stock has changed
+                risingDays = 1;
+                incrementalChange = stockChangePct;
+            }
+            else {
+                risingDays = stockFromDb.numOfRisingDays + 1;
+                incrementalChange = stockFromDb.accumulatedChange + Number(stockChangePct);
+            }
         }
         else
-            if (newValues[2] < 0) {//in case the stock price has decreased
-                risingDays = result[0].numOfRisingDays - 1;
+            if (stockChangePct < 0) {//in case the stock price has decreased
+                if (stockFromDb.numOfRisingDays > 0) {//in case trend of stock has changed
+                    risingDays = -1;
+                    incrementalChange = Number(stockChangePct);
+                }
+                else {
+                    risingDays = stockFromDb.numOfRisingDays - 1;
+                    incrementalChange = stockFromDb.accumulatedChange + Number(stockChangePct);
+                }
             }
     }).then(async () => {
-        await Stock.updateOne({ Symbol: newValues[0] }, { prevPrice: newValues[1], numOfRisingDays: risingDays }).then((res=>{console.log(res)}));
-        console.log("rising days for stock " + newValues[0] + " is:" + risingDays);
+        await Stock.updateOne({ Symbol: stockSymbol }, { prevPrice: stockPrice, numOfRisingDays: risingDays, accumulatedChange: incrementalChange }).then((res => { console.log(res) }));
+        console.log("rising days for stock " + stockSymbol + " is: " + risingDays);
+        console.log("incremental change for stock " + stockSymbol + " is: " + incrementalChange);
     })
 
 }
