@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <title> show </title>
 </head>
 <body>
@@ -18,7 +19,7 @@
     <p>  <b>Sector</b> <%= stock.Sector  %></p>
     <p>  <b>Industry</b> <%= stock.Industry  %></p>
     <p>  <b>Number of rising days:</b> <%= stock.numOfRisingDays  %></p>
-    <p>  <b>Accumulated change:</b> <%= stock.accumulatedChange  %> %</p>
+    <p>  <b>Accumulated change:</b> <%= stock.accumulatedChange.toFixed()  %> %</p>
     
     <p>For more Data: <a href="https://www.nasdaq.com/market-activity/stocks/<%= stock.Symbol  %>">Click here</a></p>
     <p>

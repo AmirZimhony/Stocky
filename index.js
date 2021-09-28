@@ -12,6 +12,28 @@ const ExpressError = require('./utils/ExpressError');
 const { STATUS_CODES } = require('http');
 const { google } = require('googleapis');
 
+//***************Authentication with Gogle sheets****** */
+const auth = new google.auth.GoogleAuth({
+    keyFile: "./credentials.json",
+
+    scopes: "https://www.googleapis.com/auth/spreadsheets",
+});
+
+
+ // Create client instance for auth
+ var client = null;
+ const clientStart = async () =>{
+      client = await auth.getClient();
+ }
+ 
+ clientStart();
+ 
+
+// Instance of Google Sheets API
+const googleSheets = google.sheets({ version: "v4", auth: client });
+const spreadsheetId = '1j4A9tXOIMpZ9tnve5iEcvxJJxy3L1U-5Yjulxhgj9t0';
+
+
 mongoose.connect('mongodb://localhost:27017/stocky', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -100,38 +122,18 @@ app.get('/makestock', catchAsync(async (req, res) => {
 }))
 
 app.get("/upDateStocks", async (req, res) => {
-    const auth = new google.auth.GoogleAuth({
-        keyFile: "./credentials.json",
-
-        scopes: "https://www.googleapis.com/auth/spreadsheets",
-    });
-
-
-    // Create client instance for auth
-    const client = await auth.getClient();
-
-    // Instance of Google Sheets API
-    const googleSheets = google.sheets({ version: "v4", auth: client });
-
-    const spreadsheetId = '1j4A9tXOIMpZ9tnve5iEcvxJJxy3L1U-5Yjulxhgj9t0';
-    // Get metadata about spreadsheet
-    const metaData = await googleSheets.spreadsheets.get({
-        auth,
-        spreadsheetId,
-    });
-
-    // Read rows from spreadsheet
+     
     const getRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
         range: "Sheet1!A:D",
     });
     console.log("specific data is " + getRows.data.values[1][0]);
-    await res.send(getRows.data)
-    // updateSingleStock(getRows.data.values[7]);
+    //  updateSingleStock(getRows.data.values[7]); ///here for testing the update of a single stock. 
     for (let i = 1; i < getRows.data.values.length; i++) {
         updateSingleStock(getRows.data.values[i]);
     }
+    await res.send(getRows.data)
 })
 
 app.all('*', (req, res, next) => {
@@ -188,6 +190,8 @@ const updateSingleStock = async (newValues) => {
         await Stock.updateOne({ Symbol: stockSymbol }, { prevPrice: stockPrice, numOfRisingDays: risingDays, accumulatedChange: incrementalChange }).then((res => { console.log(res) }));
         console.log("rising days for stock " + stockSymbol + " is: " + risingDays);
         console.log("incremental change for stock " + stockSymbol + " is: " + incrementalChange);
+    }).catch(err => {
+        console.log("due to " + err + " the stock " + stockSymbol + " must be reassesed in the database.");
     })
 
 }

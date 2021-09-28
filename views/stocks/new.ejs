@@ -9,20 +9,48 @@
 <body>
     <form action="/stocks" method="POST">
         <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="stock[name]">
+            <label for="Symbol">Symbol</label>
+            <input type="text" id="Symbol" name="stock[Symbol]">
         </div>
         <div>
-            <label for="ISIN">ISIN</label>
-            <input type="text" id="ISIN" name="stock[ISIN]">
+            <label for="Name">Name</label>
+            <input type="text" id="name" name="stock[Name]">
         </div>
         <div>
-            <label for="indices">indices</label>
-            <input type="text" id="indices" name="stock[indices]">
+            <label for="">price</label>
+            <input type="text" id="price" name="stock[prevPrice]">
         </div>
         <div>
-            <label for="price">Price</label>
-            <input type="number" id="price" name="stock[price]">
+            <label for="MarketCap">Market Cap</label>
+            <input type="number" id="MarketCap" name="stock[MarketCap]">
+        </div>
+        <div>
+            <label for="Country">Country</label>
+            <input type="text" id="Country" name="stock[Country]">
+        </div>
+        <div>
+            <label for="IPOYear">IPO Year</label>
+            <input type="number" id="IPOYear" name="stock[IPOYear]">
+        </div>
+        <div>
+            <label for="Volume">Volume</label>
+            <input type="number" id="Volume" name="stock[Volume]">
+        </div>
+        <div>
+            <label for="Sector">Sector</label>
+            <input type="text" id="Sector" name="stock[Sector]">
+        </div>
+        <div>
+            <label for="Industry">Industry</label>
+            <input type="text" id="Industry" name="stock[Industry]">
+        </div>
+        <div>
+            <label for="numOfRisingDays">Rising Days</label>
+            <input type="number" id="numOfRisingDays" value="0" name="stock[numOfRisingDays]">
+        </div>
+        <div>
+            <label for="accumulatedChange">Accumulated Change</label>
+            <input type="number" id="accumulatedChange" value="0" name="stock[accumulatedChange]">
         </div>
         <button>add Stock</button>
     </form>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <title>Stocks</title>
     <link rel="icon" type="image/png" href="reading.jpg">
 </head>
@@ -13,16 +14,17 @@
     <h1>All stocks</h1>
 
     <div>
-        <a href="/stocks/new">add stock</a>
+        <a class="m-3" href="/stocks/new">Add stock</a>
     </div>
 
     <ul id = 'stockList'>
         <!-- <button id="btn"> For Freshest IPOs</button> -->
-       <% const trendest = stocks.filter(stock => stock.numOfRisingDays > 4 && stock.IPOYear>2018)   %> <!--maybe useful in future-->
+       <% const trendest = stocks.filter(stock => stock.numOfRisingDays > 6 || stock.accumulatedChange > 15 )   %> <!--maybe useful in future-->
+       <% stocks.sort((a,b) => (a.IPOYear > b.IPOYear) ? 1 : -1) %> <!--sort stocks by IPO year, not crucial for flow.-->
         <% for (let stock of stocks) { %>
             <li><a href="/stocks/<%= stock.id  %> ">
                     <%= stock.Symbol %> , <%= stock.Name %> 
-                </a></li>
+                </a> <%= stock.accumulatedChange.toFixed(2)  %> </li>
             <% } %>
     </ul>
 </body>
