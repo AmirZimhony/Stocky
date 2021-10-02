@@ -19,6 +19,7 @@ const auth = new google.auth.GoogleAuth({
     scopes: "https://www.googleapis.com/auth/spreadsheets",
 });
 
+const stocksViews = require('./routes/stocksViews');
 
  // Create client instance for auth
  var client = null;
@@ -72,54 +73,8 @@ app.set('views', path.join(__dirname, '/views'));//makes it possible to open thi
 
 //defining responses to different requests
 
-app.get('/home', (req, res) => {
-    res.render('home')
-})
 
-app.get('/stocks', catchAsync(async (req, res) => {
-    const stocks = await Stock.find({});
-    res.render('stocks/index', { stocks })
-}))
-
-app.get('/stocks/new', catchAsync(async (req, res) => {
-    res.render('stocks/new')
-}))
-
-app.get('/stocks/:id', catchAsync(async (req, res) => {
-    const stock = await Stock.findById(req.params.id);
-    res.render('stocks/show', { stock });
-}))
-
-app.get('/stocks/:id/edit', catchAsync(async (req, res) => {
-    const stock = await Stock.findById(req.params.id);
-    res.render('stocks/edit', { stock });
-}))
-
-app.post('/stocks', catchAsync(async (req, res) => {
-    // if (!req.body.stock) throw new ExpressError('Invalid stock data', 400)
-    const stock = new Stock(req.body.stock);
-    await stock.save();
-    res.redirect(`/stocks/${stock._id}`)
-}))
-
-app.put('/stocks/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const stock = await Stock.findByIdAndUpdate(id, { ...req.body.stock })
-    console.log("updated values passed are:", { ...req.body.stock })
-    res.redirect(`/stocks/${stock._id}`)
-}))
-
-app.delete('/stocks/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Stock.findByIdAndDelete(id);
-    res.redirect(`/stocks/`)
-}))
-
-app.get('/makestock', catchAsync(async (req, res) => {
-    const singleStock = new Stock({ name: "apple", DateOfInitialPurchase: Date(), initialPurshaseSum: 5000 });
-    await singleStock.save();
-    res.send(singleStock)
-}))
+app.use('', stocksViews); //define path for all routes on stocksViews file. They must all start with the first argument ("/stocks")
 
 app.get("/upDateStocks", async (req, res) => {
      

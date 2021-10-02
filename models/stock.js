@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
 //----------define our database structure----------
 
 const StockSchema = new mongoose.Schema({
