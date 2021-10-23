@@ -2,15 +2,18 @@
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');//package allowing to overide methods and use methods like PATCH/DELETE
+const session = require('express-session');
 const { v4: uuid } = require('uuid');//package for generating unique ids
 uuid();
 const mongoose = require('mongoose');
 // const { stockSchema } = require('./schemas.js');
+const ejsMate = require('ejs-mate');
 const Stock = require("./models/stock");
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const { STATUS_CODES } = require('http');
 const { google } = require('googleapis');
+const flash = require('connect-flash');
 
 //***************Authentication with Gogle sheets****** */
 const auth = new google.auth.GoogleAuth({
@@ -18,6 +21,8 @@ const auth = new google.auth.GoogleAuth({
 
     scopes: "https://www.googleapis.com/auth/spreadsheets",
 });
+
+
 
 const stocksViews = require('./routes/stocksViews');
 
@@ -34,7 +39,6 @@ const stocksViews = require('./routes/stocksViews');
 const googleSheets = google.sheets({ version: "v4", auth: client });
 const spreadsheetId = '1j4A9tXOIMpZ9tnve5iEcvxJJxy3L1U-5Yjulxhgj9t0';
 
-
 mongoose.connect('mongodb://localhost:27017/stocky', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -50,12 +54,32 @@ db.once("open", () => {
 
 const app = express();
 
+/// define properties of session
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use((req, res, next) => { ///middleware allowing flash variables to be acessible from all templates as local variables. Should come before route handlers
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next()
+})
 
 app.use(express.static(path.join(__dirname, 'public')));//makes it possible to open this file from different folders
 app.use(express.urlencoded({ extended: true }));//allows us to parse  html data from requests
 app.use(express.json());//allows us to parse json data from requests
 app.use(methodOverride('_method'));//alows us to overide GET/POST requests, thus we are able to send PATCH/DELETE requests
 
+app.engine('ejs', ejsMate); //allows us to define a layout (boilerplate) file
 app.set('view engine', 'ejs');//determining engine for injecting variables into pages
 app.set('views', path.join(__dirname, '/views'));//makes it possible to open this file from different folders
 
@@ -74,7 +98,7 @@ app.set('views', path.join(__dirname, '/views'));//makes it possible to open thi
 //defining responses to different requests
 
 
-app.use('', stocksViews); //define path for all routes on stocksViews file. They must all start with the first argument ("/stocks")
+app.use('', stocksViews); //define path for all routes on stocksViews file. They must all start with the first argument (" " in this case)
 
 app.get("/upDateStocks", async (req, res) => {
      
