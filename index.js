@@ -14,6 +14,9 @@ const ExpressError = require('./utils/ExpressError');
 const { STATUS_CODES } = require('http');
 const { google } = require('googleapis');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require("./models/user");
 
 //***************Authentication with Gogle sheets****** */
 const auth = new google.auth.GoogleAuth({
@@ -23,8 +26,8 @@ const auth = new google.auth.GoogleAuth({
 });
 
 
-
-const stocksViews = require('./routes/stocksViews');
+const usersRoutes = require('./routes/users'); 
+const stocksViews = require('./routes/stocksViews'); 
 
  // Create client instance for auth
  var client = null;
@@ -68,6 +71,13 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));//specify to passport the authentication method we are using
+
+passport.serializeUser(User.serializeUser()); //specify to passport how to store user in session
+passport.deserializeUser(User.deserializeUser()); //specify to passport how to unstore user in session
+
 app.use((req, res, next) => { ///middleware allowing flash variables to be acessible from all templates as local variables. Should come before route handlers
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -97,8 +107,14 @@ app.set('views', path.join(__dirname, '/views'));//makes it possible to open thi
 
 //defining responses to different requests
 
-
+app.use('', usersRoutes); //define path for all routes on users file. They must all start with the first argument (" " in this case)
 app.use('', stocksViews); //define path for all routes on stocksViews file. They must all start with the first argument (" " in this case)
+
+app.get("/fakeUser", async (req, res) => { ///testing addition of new user with passport
+    const user = new User ({ email: '123@gmail.com', username: '123'});
+    const newUser = await User.register (user, 'chick');
+    res.send(newUser);
+})
 
 app.get("/upDateStocks", async (req, res) => {
      
