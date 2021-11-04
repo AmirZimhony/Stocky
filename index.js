@@ -117,7 +117,8 @@ app.get("/fakeUser", async (req, res) => { ///testing addition of new user with 
 })
 
 app.get("/upDateStocks", async (req, res) => {
-     
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); 
     const getRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
@@ -128,7 +129,7 @@ app.get("/upDateStocks", async (req, res) => {
     for (let i = 1; i < getRows.data.values.length; i++) {
         updateSingleStock(getRows.data.values[i]);
     }
-    await res.send(getRows.data)
+    await res.send(getRows.data);
 })
 
 app.all('*', (req, res, next) => {
