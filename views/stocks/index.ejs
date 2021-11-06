@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>All stocks</h1>
+    <h2>All stocks</h2>
      
     <div>
         <a class="m-3" href="/stocks/new">Add stock</a>
@@ -14,9 +14,9 @@
 
     <ul id = 'stockList'>
         <!-- <button id="btn"> For Freshest IPOs</button> -->
-       <% const trendest = stocks.filter(stock => stock.numOfRisingDays > 6 || stock.accumulatedChange > 15 )   %> <!--maybe useful in future-->
+       <% const trendest = stocks.filter(stock => stock.numOfRisingDays > 3 && stock.accumulatedChange > 15 )   %> <!--maybe useful in future-->
        <%# stocks.sort((a,b) => (a.IPOYear > b.IPOYear) ? 1 : -1) %> <!--sort stocks by IPO year, not crucial for flow of program.-->
-        <% for (let stock of stocks) { %>
+        <% for (let stock of trendest) { %>
             <li><a href="/stocks/<%= stock.id  %> ">
                     <%= stock.Symbol %> , <%= stock.Name %> 
                 </a> <%= stock.accumulatedChange.toFixed(2)  %> </li>

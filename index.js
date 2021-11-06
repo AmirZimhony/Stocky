@@ -78,7 +78,9 @@ passport.use(new LocalStrategy(User.authenticate()));//specify to passport the a
 passport.serializeUser(User.serializeUser()); //specify to passport how to store user in session
 passport.deserializeUser(User.deserializeUser()); //specify to passport how to unstore user in session
 
-app.use((req, res, next) => { ///middleware allowing flash variables to be acessible from all templates as local variables. Should come before route handlers
+app.use((req, res, next) => { ///middleware allowing flash variables and user data to be acessible from all templates as local variables. Should come before route handlers
+    console.log(req.session);
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next()
@@ -117,8 +119,8 @@ app.get("/fakeUser", async (req, res) => { ///testing addition of new user with 
 })
 
 app.get("/upDateStocks", async (req, res) => {
-    var today = new Date();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); 
+    var today = new Date(); //maybe useful in future
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); //maybe useful in future
     const getRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
