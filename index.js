@@ -119,8 +119,8 @@ app.get("/fakeUser", async (req, res) => { ///testing addition of new user with 
 })
 
 app.get("/upDateStocks", async (req, res) => {
-    var today = new Date(); //maybe useful in future
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); //maybe useful in future
+    //var today = new Date(); //maybe useful in future
+    //var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(); //maybe useful in future
     const getRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
