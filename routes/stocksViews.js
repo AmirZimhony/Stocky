@@ -12,20 +12,18 @@ router.get('/home', (req, res) => {
     res.render('home')
 })
 
-router.get('/stocks', catchAsync(stocks.index));
+router.route('/stocks')
+    .get(catchAsync(stocks.index))
+    .post(isLoggedIn, catchAsync(stocks.createNewStock))
 
 router.get('/stocks/new', isLoggedIn, catchAsync(stocks.renderNewStock));
 
-router.get('/stocks/:id', catchAsync(stocks.showStock))
+router.route('/stocks/:id')
+    .get(catchAsync(stocks.showStock))
+    .put(isLoggedIn, catchAsync(stocks.updateStock))
+    .delete(isLoggedIn, catchAsync(stocks.deleteStock))
 
 router.get('/stocks/:id/edit', isLoggedIn, catchAsync(stocks.renderEdit))
-
-router.post('/stocks', isLoggedIn, catchAsync(stocks.createNewStock))
-
-router.put('/stocks/:id', isLoggedIn, catchAsync(stocks.updateStock))
-
-router.delete('/stocks/:id', isLoggedIn, catchAsync(stocks.deleteStock))
-
 
 
 module.exports = router;
