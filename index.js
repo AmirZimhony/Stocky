@@ -1,3 +1,9 @@
+if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
+    require('dotenv').config();
+}
+
+
+
 // setting app up - express, path, view engine
 const express = require('express');
 const path = require('path');
@@ -40,7 +46,7 @@ const stocksViews = require('./routes/stocksViews');
 
 // Instance of Google Sheets API
 const googleSheets = google.sheets({ version: "v4", auth: client });
-const spreadsheetId = '1j4A9tXOIMpZ9tnve5iEcvxJJxy3L1U-5Yjulxhgj9t0';
+const spreadsheetId = process.env.GoogleSheetID; // Id of sheet is kept in env file
 
 mongoose.connect('mongodb://localhost:27017/stocky', {
     useNewUrlParser: true,
