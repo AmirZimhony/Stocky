@@ -1,8 +1,8 @@
-if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
-    require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
+//     require('dotenv').config();
+// }
 
-
+require('dotenv').config();
 
 // setting app up - express, path, view engine
 const express = require('express');
@@ -65,11 +65,13 @@ const app = express();
 
 /// define properties of session
 const sessionConfig = {
+    name: 'session', //we define a name so the browser wouldn't use the default name and make it easier for hackers to discover the sessionID and steal the session information
     secret: 'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true, # will be uncommented once we deploy. Allows cookies over https only (local host is http and not https)
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -164,7 +166,7 @@ const updateSingleStock = async (newValues) => {
     let stockPrice = newValues[1];
     let stockChange = newValues[2];
     let stockChangePct = newValues[3];
-    console.log("editing" + stockSymbol + "price to be:" + stockPrice)
+    console.log("editing " + stockSymbol + "price to be:" + stockPrice)
     let risingDays = 0;
     let incrementalChange = 0;
     const risingStock = await Stock.find({ Symbol: stockSymbol }).then((result) => {
