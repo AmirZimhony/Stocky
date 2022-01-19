@@ -23,7 +23,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require("./models/user");
-const dbUrl = process.env.DB_URL; //url of our cloud database. We will connect to it once we are in production mode.
+// const dbUrl = process.env.DB_URL; //url of our cloud database. We will connect to it once we are in production mode.
 
 //***************Authentication with Gogle sheets****** */
 const auth = new google.auth.GoogleAuth({
@@ -50,7 +50,7 @@ const googleSheets = google.sheets({ version: "v4", auth: client });
 const spreadsheetId = process.env.GoogleSheetID; // Id of sheet is kept in env file
 
 //mongodb://localhost:27017/stocky - this is the address of our local database, the one we connect to with mongod
-mongoose.connect(dbUrl, {
+mongoose.connect('mongodb://localhost:27017/stocky', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
