@@ -7,7 +7,9 @@
     <div class="col-6 offset-3">
         <div class="alert alert-danger" role="alert">
             <h4 class="alert-heading"><%= err.message %> </h4>
-            <% if (process.env.NODE_ENV !== "production") { %>
+            <!-- addition of condition that displays entire error stack only when we are in development mode. 
+            Real life users (in production mode) should not see the entire error stack. -->
+            <% if (process.env.NODE_ENV !== "production") { %> 
                 <p><%= err.stack  %> </p>
             <% } %> 
             <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit

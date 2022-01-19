@@ -1,8 +1,8 @@
-// if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
-//     require('dotenv').config();
-// }
+if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
+    require('dotenv').config();
+}
 
-require('dotenv').config();
+// require('dotenv').config(); //uncomment this if we want to start app in production mode from git bash
 
 // setting app up - express, path, view engine
 const express = require('express');
@@ -23,6 +23,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require("./models/user");
+const dbUrl = process.env.DB_URL; //url of our cloud database. We will connect to it once we are in production mode.
 
 //***************Authentication with Gogle sheets****** */
 const auth = new google.auth.GoogleAuth({
@@ -48,7 +49,8 @@ const stocksViews = require('./routes/stocksViews');
 const googleSheets = google.sheets({ version: "v4", auth: client });
 const spreadsheetId = process.env.GoogleSheetID; // Id of sheet is kept in env file
 
-mongoose.connect('mongodb://localhost:27017/stocky', {
+//mongodb://localhost:27017/stocky - this is the address of our local database, the one we connect to with mongod
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -65,7 +67,7 @@ const app = express();
 
 /// define properties of session
 const sessionConfig = {
-    name: 'session', //we define a name so the browser wouldn't use the default name and make it easier for hackers to discover the sessionID and steal the session information
+    name: 'session', //we hardcode a name so the browser wouldn't use the default name and make it easier for hackers to discover the session name and steal the session information
     secret: 'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
