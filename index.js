@@ -23,6 +23,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require("./models/user");
+const MongoDBStore = require('connect-mongo');
+
 // const dbUrl = process.env.DB_URL; //url of our cloud database. We will connect to it once we are in production mode.
 
 //***************Authentication with Gogle sheets****** */
@@ -65,8 +67,19 @@ db.once("open", () => {
 
 const app = express();
 
+
+const store = new MongoDBStore({
+mongoUrl: 'mongodb://localhost:27017/stocky',
+secret: 'thisshouldbeabettersecret',
+touchAfter: 24 * 60 * 60 // Time for default saving of session data, instead of saving it on every 'refresh' action of the user. Specifies time in seconds.
+});
+
+store.on("error", function(e){
+    console.log("SESSION STORE ERROR", e)
+})
 /// define properties of session
 const sessionConfig = {
+    store,
     name: 'session', //we hardcode a name so the browser wouldn't use the default name and make it easier for hackers to discover the session name and steal the session information
     secret: 'thisshouldbeabettersecret',
     resave: false,
@@ -74,8 +87,8 @@ const sessionConfig = {
     cookie: {
         httpOnly: true,
         // secure: true, # will be uncommented once we deploy. Allows cookies over https only (local host is http and not https)
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //specifies time in milliseconds
+        maxAge: 1000 * 60 * 60 * 24 * 7 //specifies time in milliseconds
     }
 }
 app.use(session(sessionConfig));
