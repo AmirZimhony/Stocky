@@ -169,8 +169,10 @@ app.use((err, req, res, next) => {
 })
 
 //defining port to listen on - 3000 for Andre 3000
-app.listen(3000, () => {
-    console.log('listening...')
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`listening on port ${port}`)
 }
 )
 
