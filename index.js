@@ -25,7 +25,7 @@ const LocalStrategy = require('passport-local');
 const User = require("./models/user");
 const MongoDBStore = require('connect-mongo');
 
-// const dbUrl = process.env.DB_URL; //url of our cloud database. We will connect to it once we are in production mode.
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/stocky'; //url of our cloud database. We will connect to it once we are in production mode.
 
 //***************Authentication with Gogle sheets****** */
 const auth = new google.auth.GoogleAuth({
@@ -52,7 +52,7 @@ const googleSheets = google.sheets({ version: "v4", auth: client });
 const spreadsheetId = process.env.GoogleSheetID; // Id of sheet is kept in env file
 
 //mongodb://localhost:27017/stocky - this is the address of our local database, the one we connect to with mongod
-mongoose.connect('mongodb://localhost:27017/stocky', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -66,11 +66,11 @@ db.once("open", () => {
 });
 
 const app = express();
-
+const secret = process.env.SECRET || 'thisshouldbeabettersecret';
 
 const store = new MongoDBStore({
-mongoUrl: 'mongodb://localhost:27017/stocky',
-secret: 'thisshouldbeabettersecret',
+mongoUrl: dbUrl,
+secret,
 touchAfter: 24 * 60 * 60 // Time for default saving of session data, instead of saving it on every 'refresh' action of the user. Specifies time in seconds.
 });
 
@@ -81,7 +81,7 @@ store.on("error", function(e){
 const sessionConfig = {
     store,
     name: 'session', //we hardcode a name so the browser wouldn't use the default name and make it easier for hackers to discover the session name and steal the session information
-    secret: 'thisshouldbeabettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
