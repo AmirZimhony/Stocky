@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== "production") { // If we aren't in production mode 
 }
 
 // require('dotenv').config(); //uncomment this if we want to start app in production mode from git bash
-
+//
 // setting app up - express, path, view engine
 const express = require('express');
 const path = require('path');
