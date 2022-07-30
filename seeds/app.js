@@ -1,3 +1,7 @@
+// file for updating stocks in DB.
+// *currently only inserts stocks from seeding JSON file. Need to add condition that checks if stock is in DB already --> then do not modify it.
+// currently does not address the problem of removing stocks that are no longer relevant from DB/API
+
 const mongoose = require('mongoose');
 const stockList = require('./stocklist')
 const Stock = require("../models/stock");
@@ -12,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/stocky', {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Stocky Database connected from app.js")
+    console.log("Stocky Database connected from app.js. Seeding ourDB with stocks.")
 });
 
 const seedDB = async () => {

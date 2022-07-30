@@ -1,6 +1,6 @@
-if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
-    require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== "production") { // If we aren't in production mode (i.e. development mode) then upload environment variables
+//     require('dotenv').config();
+// }
 
 // require('dotenv').config(); //uncomment this if we want to start app in production mode from git bash
 //
@@ -17,6 +17,7 @@ const ejsMate = require('ejs-mate');
 const Stock = require("./models/stock");
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
+const dotenv = require('dotenv');
 const { STATUS_CODES } = require('http');
 const { google } = require('googleapis');
 const flash = require('connect-flash');
@@ -25,6 +26,7 @@ const LocalStrategy = require('passport-local');
 const User = require("./models/user");
 const MongoDBStore = require('connect-mongo');
 
+dotenv.config();
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/stocky'; //url of our cloud database. We will connect to it once we are in production mode.
 
 //***************Authentication with Gogle sheets****** */
@@ -33,6 +35,7 @@ const auth = new google.auth.GoogleAuth({
 
     scopes: "https://www.googleapis.com/auth/spreadsheets",
 });
+
 
 
 const usersRoutes = require('./routes/users'); 
@@ -62,7 +65,7 @@ mongoose.connect(dbUrl, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Stocky Database connected")
+    console.log(`Stocky Database connected to ${dbUrl}`)
 });
 
 const app = express();
