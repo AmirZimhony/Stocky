@@ -2,20 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-//----------define our database structure----------
+const StocksSchema = new mongoose.Schema({
+    serial_number: Number,
+    change: String,
+    company: String,
+    country: String,
+    industry: String,
+    market_cap: String,
+    pe_ratio: String,
+    price: Number,
+    sector: String,
+    ticker: String,
+    volume: String,
+    accumulatedChange: Number,
+    numOfRisingDays: Number
+}, {collection: 'stocks'});
 
-const StockSchema = new mongoose.Schema({
-    Symbol: String,
-    Name: String,
-    prevPrice: String,
-    MarketCap: Number,
-    Country: String,
-    IPOYear: Number,
-    Volume: Number,
-    Sector: String,
-    Industry: String,
-    numOfRisingDays: Number,
-    accumulatedChange: Number
-});
 
-module.exports = mongoose.model('Stock', StockSchema)
+module.exports = mongoose.model('Stock', StocksSchema)    

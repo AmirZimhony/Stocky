@@ -7,27 +7,24 @@
 
     <body>
         <h1>
-            <%= stock.Name %> show
+            <%= stock.name %> show
         </h1>
         
 
-            <p> Symbol <%= stock.Symbol %>
+            <p> Symbol <%= stock.symbol %>
             </p>
-            <p> Price <%= stock.prevPrice %>
+            <p> Price <%= stock.price %>
             </p>
-            <p> Volume <%= stock.Volume %>
+            <p> Volume <%= stock.volume %>
             </p>
             <p> <b>Country</b>
-                <%= stock.Country %>
-            </p>
-            <p> <b>IPO Year</b>
-                <%= stock.IPOYear %>
+                <%= stock.country %>
             </p>
             <p> <b>Sector</b>
-                <%= stock.Sector %>
+                <%= stock.sector %>
             </p>
             <p> <b>Industry</b>
-                <%= stock.Industry %>
+                <%= stock.industry %>
             </p>
             <p> <b>Number of rising days:</b>
                 <%= stock.numOfRisingDays %>
@@ -36,7 +33,7 @@
                 <%= stock.accumulatedChange.toFixed() %> %
             </p>
 
-            <p>For more Data: <a href="https://www.nasdaq.com/market-activity/stocks/<%= stock.Symbol  %>">Click
+            <p>For more Data: <a href="https://www.nasdaq.com/market-activity/stocks/<%= stock.ticker  %>">Click
                     here</a></p>
             <p>
             <form action="/stocks/<%= stock._id  %>?_method=DELETE" method="POST">

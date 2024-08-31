@@ -1,8 +1,12 @@
+const { healthcare } = require('googleapis/build/src/apis/healthcare');
 const Stock = require('../models/stock');
+const Stocks = require('../models/stockOrig');
 
 
 module.exports.index = async (req, res) => {
     const stocks = await Stock.find({});
+    console.log("in stocks path")
+    // console.log(stocks)
     res.render('stocks/index', { stocks })
 }
 

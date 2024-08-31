@@ -2,7 +2,7 @@
 //     require('dotenv').config();
 // }
 
-// require('dotenv').config(); //uncomment this if we want to start app in production mode from git bash
+require('dotenv').config(); //uncomment this if we want to start app in production mode from git bash
 //
 // setting app up - express, path, view engine
 const express = require('express');
@@ -12,6 +12,7 @@ const session = require('express-session');
 const { v4: uuid } = require('uuid');//package for generating unique ids
 uuid();
 const mongoose = require('mongoose');
+const { MongoClient } = require("mongodb");
 // const { stockSchema } = require('./schemas.js');
 const ejsMate = require('ejs-mate');
 const Stock = require("./models/stock");
@@ -27,6 +28,7 @@ const User = require("./models/user");
 const MongoDBStore = require('connect-mongo');
 
 dotenv.config();
+
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/stocky'; //url of our cloud database. We will connect to it once we are in production mode.
 
 //***************Authentication with Gogle sheets****** */
@@ -55,18 +57,27 @@ const googleSheets = google.sheets({ version: "v4", auth: client });
 const spreadsheetId = process.env.GoogleSheetID; // Id of sheet is kept in env file
 
 //mongodb://localhost:27017/stocky - this is the address of our local database, the one we connect to with mongod
+
+
+
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    dbName: 'stock_data',
 });
 
 
+console.log(`connections number is ${mongoose.connections.length}`)
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log(`Stocky Database connected to ${dbUrl}`)
+    for (c in db.collections){
+        console.log(`collections are ${c}`)
+    }
 });
+
 
 const app = express();
 const secret = process.env.SECRET || 'thisshouldbeabettersecret';

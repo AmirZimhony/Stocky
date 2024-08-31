@@ -1,3 +1,5 @@
+// irrelevant file at the moment
+
 apiKey = 'hidden now';
 apiHost = 'apidojo-yahoo-finance-v1.p.rapidapi.com';
 axios = require('axios');
